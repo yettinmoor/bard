@@ -1,5 +1,6 @@
 use crate::block::Block;
 
+use log::{error, info};
 use std::{
     collections::HashMap,
     env,
@@ -55,7 +56,7 @@ impl Bard {
                 .collect()
         };
 
-        eprintln!(
+        info!(
             "bard init: [{}]",
             blocks
                 .iter()
@@ -93,7 +94,7 @@ impl Bard {
             }
         }
         let s = String::from_utf8_lossy(&writer).to_string();
-        eprint!("{}", s);
+        info!("{}", s);
         s
     }
 
@@ -103,7 +104,7 @@ impl Bard {
             block.run(&mut writer);
         }
         let s = String::from_utf8_lossy(&writer).to_string();
-        eprint!("{}", s);
+        info!("{}", s);
         s
     }
 
@@ -128,7 +129,7 @@ impl Bard {
             .arg(&s)
             .output()
             .unwrap();
-        eprintln!("draw_bar: `{s}`");
+        info!("draw_bar: `{s}`");
         s
     }
 
@@ -147,7 +148,7 @@ impl Bard {
         match YamlLoader::load_from_str(&config_str) {
             Ok(config) => config[0].clone(),
             Err(e) => {
-                eprintln!("parse error:\n{}", e);
+                error!("when parsing {}:\n{}", config_path.to_string_lossy(), e);
                 exit(1);
             }
         }

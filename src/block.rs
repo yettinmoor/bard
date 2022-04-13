@@ -18,6 +18,7 @@ impl Block {
             last_output: String::new(),
         }
     }
+
     pub fn run(&mut self, writer: &mut dyn Write) {
         let output = Command::new("sh")
             .arg("-c")
