@@ -19,7 +19,7 @@ pub fn update(blocks: &[String]) {
             .expect("could not find bard");
         s
     };
-    eprintln!("{}", reply);
+    eprint!("{}", reply);
 
     let (bar,): (String,) = proxy.method_call(bus::BUS_NAME, "draw_bar", ()).unwrap();
     eprintln!("bard: `{}`", bar);

@@ -94,7 +94,7 @@ impl Bard {
             }
         }
         let s = String::from_utf8_lossy(&writer).to_string();
-        info!("{}", s);
+        info!("{}", s.trim_end());
         s
     }
 
@@ -104,7 +104,7 @@ impl Bard {
             block.run(&mut writer);
         }
         let s = String::from_utf8_lossy(&writer).to_string();
-        info!("{}", s);
+        info!("{}", s.trim_end());
         s
     }
 
@@ -135,7 +135,6 @@ impl Bard {
 
     pub fn restart(&mut self) {
         *self = Bard::init(Some(self.config_path.clone()));
-        let _ = self.update_all();
     }
 
     fn parse_config(config_path: &PathBuf) -> Yaml {
