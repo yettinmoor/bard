@@ -1,4 +1,5 @@
 use crate::bus;
+use dbus::Error;
 use std::time::Duration;
 
 pub fn update(blocks: &[String]) {
@@ -8,21 +9,24 @@ pub fn update(blocks: &[String]) {
         bus::BARD_OBJECT_NAME,
         Duration::from_millis(1000),
     );
-    let reply: String = if !blocks.is_empty() {
-        let (s,): (String,) = proxy
-            .method_call(bus::BUS_NAME, "update", (blocks,))
-            .expect("could not find bard");
-        s
+    let res: Result<(bool, String), Error> = if !blocks.is_empty() {
+        proxy.method_call(bus::BUS_NAME, "update", (blocks,))
     } else {
-        let (s,) = proxy
-            .method_call(bus::BUS_NAME, "update_all", ())
-            .expect("could not find bard");
-        s
+        proxy.method_call(bus::BUS_NAME, "update_all", ())
     };
-    eprint!("{}", reply);
 
-    let (bar,): (String,) = proxy.method_call(bus::BUS_NAME, "draw_bar", ()).unwrap();
-    eprintln!("bard: `{}`", bar);
+    match res {
+        Ok((ok, reply)) => {
+            eprint!("{}", reply);
+            if ok {
+                let (bar,): (String,) = proxy.method_call(bus::BUS_NAME, "draw_bar", ()).unwrap();
+                eprintln!("bard: `{}`", bar);
+            }
+        }
+        Err(_) => {
+            eprintln!("error: could not find running bard instance");
+        }
+    }
 }
 
 pub fn restart() {

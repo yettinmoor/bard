@@ -50,14 +50,11 @@ impl Block {
 
     pub fn draw(&self) -> Option<String> {
         self.last_output.is_empty().not().then(|| {
-            format!(
-                "{}{}",
-                self.prefix
-                    .as_ref()
-                    .map(|p| format!("{} ", p))
-                    .unwrap_or_else(|| "".to_string()),
-                self.last_output
-            )
+            if let Some(prefix) = &self.prefix {
+                format!("{} {}", prefix, self.last_output)
+            } else {
+                self.last_output.clone()
+            }
         })
     }
 }

@@ -15,11 +15,11 @@ pub fn init() {
         b.method(
             "update",
             ("blocks",),
-            ("reply",),
-            |_, bard, (blocks,): (Vec<String>,)| Ok((bard.update(&blocks),)),
+            ("ok", "reply"),
+            |_, bard, (blocks,): (Vec<String>,)| Ok(bard.update(&blocks)),
         );
-        b.method("update_all", (), ("reply",), |_, bard, _: ()| {
-            Ok((bard.update_all(),))
+        b.method("update_all", (), ("ok", "reply"), |_, bard, _: ()| {
+            Ok(bard.update_all())
         });
         b.method("draw_bar", (), ("reply",), |_, bard, _: ()| {
             Ok((bard.draw_bar(),))
