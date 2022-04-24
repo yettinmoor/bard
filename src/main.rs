@@ -32,11 +32,12 @@ fn main() {
     }
 }
 
-fn print_usage_and_exit(error_code: i32) {
+fn print_usage_and_exit(exit_code: i32) {
     eprintln!("usage:");
     eprintln!("  bard init");
     eprintln!("  bard update [block]+");
     eprintln!("  bard update-all");
+    eprintln!("  bard restart");
     eprintln!("  bard help");
-    exit(error_code);
+    exit(exit_code);
 }
